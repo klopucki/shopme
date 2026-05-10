@@ -1,86 +1,72 @@
-@model IEnumerable<Intranet.Models.Shop.Product>
+@model IEnumerable<Core.Models.CMS.Product>
 
 @{
-    ViewData["Title"] = "Panel Produktów";
+    ViewData["Title"] = "Products";
 }
 
-<div class="container-fluid py-4">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">📦 Zarządzanie Produktami</h5>
-            <a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
-                <i class="bi bi-plus-lg"></i> Dodaj Produkt
-            </a>
-        </div>
-        
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped mb-0 align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Tytuł</th>
-                            <th>Kategoria</th>
-                            <th class="text-end">Cena</th>
-                            <th class="text-center">Ilość sztuk</th>
-                            <th class="text-center">Aktywny od</th>
-                            <th class="text-center">Aktywny do</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-end px-3">Opcje</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @if (!Model.Any())
-                    {
-                        <tr><td colspan="8" class="text-center py-5 text-muted">Brak produktów na liście.</td></tr>
-                    }
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="fw-bold">@item.Name</td>
-                            <td>
-                                <span class="badge bg-secondary">@(item.Category?.Name ?? "Inne")</span>
-                            </td>
-                            <td class="text-end fw-bold text-primary">@item.Price.ToString("C")</td>
-                            <td class="text-center">
-                                <span class="badge rounded-pill @(item.Quantity > 5 ? "bg-success" : "bg-warning text-dark")">
-                                    @item.Quantity
-                                </span>
-                            </td>
-                            <td class="text-center small text-muted">@item.CreatedAt.ToShortDateString()</td>
-                            <td class="text-center small text-muted">
-                                @(item.ActiveUntil?.ToShortDateString() ?? "Bezterminowo")
-                            </td>
-                            <td class="text-center">
-                                @if (item.IsActive)
-                                {
-                                    <span class="text-success"><i class="bi bi-check-circle-fill"></i> Tak</span>
-                                }
-                                else
-                                {
-                                    <span class="text-danger"><i class="bi bi-x-circle-fill"></i> Nie</span>
-                                }
-                            </td>
-                            <td class="text-end px-3">
-                                <div class="btn-group">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm" title="Edytuj">
-                                        <i class="bi bi-pencil"></i> Edytuj
-                                    </a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm" title="Usuń">
-                                        <i class="bi bi-trash"></i> Usuń
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+<h1>Products</h1>
 
-<style>
-    .table th { font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
-    .card { border: none; border-radius: 12px; }
-    .card-header { border-radius: 12px 12px 0 0 !important; }
-</style>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActiveUntil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActiveUntil)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

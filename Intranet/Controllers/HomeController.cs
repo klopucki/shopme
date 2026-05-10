@@ -1,7 +1,6 @@
 using System.Diagnostics;
+using Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Intranet.Models;
-
 namespace Intranet.Controllers;
 
 public class HomeController : Controller

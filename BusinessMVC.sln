@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intranet", "Intranet\Intranet.csproj", "{160D9CB3-216A-468B-9BE9-91A24DD7E86D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{8C0E7F1A-1B2C-3D4E-5F6A-7B8C9D0E1F2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{160D9CB3-216A-468B-9BE9-91A24DD7E86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{160D9CB3-216A-468B-9BE9-91A24DD7E86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{160D9CB3-216A-468B-9BE9-91A24DD7E86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C0E7F1A-1B2C-3D4E-5F6A-7B8C9D0E1F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C0E7F1A-1B2C-3D4E-5F6A-7B8C9D0E1F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C0E7F1A-1B2C-3D4E-5F6A-7B8C9D0E1F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C0E7F1A-1B2C-3D4E-5F6A-7B8C9D0E1F2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

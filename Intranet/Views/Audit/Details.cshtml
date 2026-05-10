@@ -1,0 +1,65 @@
+@model Core.Models.CMS.AuditLog
+
+@{
+    ViewData["Title"] = "Audit Log Details";
+}
+
+<h1>Audit Log Details</h1>
+
+<div>
+    <h4>AuditLog</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Timestamp)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Timestamp)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HttpMethod)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HttpMethod)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Controller)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Controller)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Action)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Action)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Parameters)
+        </dt>
+        <dd class="col-sm-10">
+            <pre>@Html.DisplayFor(model => model.Parameters)</pre>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Result)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Result)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExceptionDetails)
+        </dt>
+        <dd class="col-sm-10">
+            <pre>@Html.DisplayFor(model => model.ExceptionDetails)</pre>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

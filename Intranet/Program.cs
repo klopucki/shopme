@@ -1,16 +1,27 @@
+using Core.Data;
 using Microsoft.EntityFrameworkCore;
-using Intranet.Data;
+using Intranet.Filters; // Added for LogActionFilter
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<LogActionFilter>(); // Register the global action filter
+});
 
 // DODAJEMY TO:
-builder.Services.AddDbContext<IntranetContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("IntranetContext")));
+builder.Services.AddDbContext<ShopMeDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); 
 
 var app = builder.Build();
+
+// Automatyczne zastosowanie migracji przy starcie aplikacji
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ShopMeDbContext>();
+    context.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

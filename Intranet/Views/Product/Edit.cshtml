@@ -1,127 +1,78 @@
-@model Intranet.Models.Shop.Product
+@model Core.Models.CMS.Product
 
 @{
-    ViewData["Title"] = "Edit Product";
+    ViewData["Title"] = "Edit";
+    var selectedTagIds = ViewBag.SelectedTagIds as List<int> ?? new List<int>();
 }
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0">✏️ Edit Product: @Model.Name</h5>
-                </div>
-                <div class="card-body">
-                    <form asp-action="Edit">
-                        <input type="hidden" asp-for="Id" />
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<h1>Edit</h1>
 
-                        <div class="row">
-                            <div class="col-md-12 mb-3">
-                                <label asp-for="Name" class="form-label fw-bold"></label>
-                                <input asp-for="Name" class="form-control" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedAt" class="control-label"></label>
+                <input asp-for="CreatedAt" class="form-control" />
+                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActiveUntil" class="control-label"></label>
+                <input asp-for="ActiveUntil" class="form-control" />
+                <span asp-validation-for="ActiveUntil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Price" class="form-label fw-bold"></label>
-                                <div class="input-group">
-                                    <span class="input-group-text">$</span>
-                                    <input asp-for="Price" class="form-control" type="number" step="0.01" />
-                                </div>
-                                <span asp-validation-for="Price" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Quantity" class="form-label fw-bold">Stock Quantity</label>
-                                <input asp-for="Quantity" class="form-control" type="number" />
-                                <span asp-validation-for="Quantity" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <label asp-for="CategoryId" class="form-label fw-bold">Category</label>
-                                <div class="input-group">
-                                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId" id="categorySelect">
-                                        <option value="">-- Select Category --</option>
-                                    </select>
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                                        <i class="bi bi-plus"></i>
-                                    </button>
-                                </div>
-                                <span asp-validation-for="CategoryId" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="ActiveUntil" class="form-label fw-bold"></label>
-                                <input asp-for="ActiveUntil" class="form-control" type="date" value="@(Model.ActiveUntil?.ToString("yyyy-MM-dd"))" />
-                                <span asp-validation-for="ActiveUntil" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6 mb-3 d-flex align-items-end">
-                                <div class="form-check form-switch mb-2">
-                                    <input class="form-check-input" type="checkbox" asp-for="IsActive" id="isActiveSwitch">
-                                    <label class="form-check-label fw-bold" for="isActiveSwitch">Active Product</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="my-4">
-
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Index" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left"></i> Cancel
-                            </a>
-                            <button type="submit" class="btn btn-primary px-4">
-                                <i class="bi bi-save"></i> Save Changes
-                            </button>
-                        </div>
-                    </form>
+            <div class="form-group">
+                <label class="control-label">Tags</label>
+                <div class="form-check">
+                    @foreach (var tag in ViewBag.Tags as List<Core.Models.CMS.Tag>)
+                    {
+                        <input type="checkbox" name="selectedTagIds" value="@tag.Id" class="form-check-input"
+                               @(selectedTagIds.Contains(tag.Id) ? "checked" : "") />
+                        <label class="form-check-label">@tag.Name</label><br />
+                    }
                 </div>
             </div>
-        </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
 
-<!-- Modal Same as Create -->
-<div class="modal fade" id="addCategoryModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title">Add New Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="newCategoryName" class="form-control" placeholder="Enter category name" />
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveCategory()">Add & Select</button>
-            </div>
-        </div>
-    </div>
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        function saveCategory() {
-            var name = $("#newCategoryName").val();
-            if (!name) {
-                alert("Please provide a category name.");
-                return;
-            }
-
-            $.post("/Product/AddCategoryInline", { name: name }, function (data) {
-                $('#categorySelect').append($('<option>', {
-                    value: data.id,
-                    text: data.name,
-                    selected: true
-                }));
-                $('#addCategoryModal').modal('hide');
-                $("#newCategoryName").val("");
-            }).fail(function() {
-                alert("Error while adding category.");
-            });
-        }
-    </script>
 }
