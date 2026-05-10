@@ -1,63 +1,63 @@
 @model Core.Models.CMS.Product
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Product";
 }
 
-<h1>Delete</h1>
+<h1 class="mb-4">Delete Product</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Product</h4>
-    <hr />
+<h3 class="text-danger mb-3">Are you sure you want to delete this?</h3>
+<div class="card p-4 shadow-sm">
+    <h4 class="mb-3">Product</h4>
+    <hr class="mb-4" />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.IsActive)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.IsActive)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.CreatedAt)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.CreatedAt)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.ActiveUntil)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.ActiveUntil)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Quantity)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Quantity)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Category)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Category.Name)
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="Delete" class="mt-4">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
     </form>
 </div>
