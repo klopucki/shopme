@@ -12,7 +12,7 @@ namespace Intranet.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
-            return View(await context.User.ToListAsync());
+            return View(await context.User.Where(u => u.IsActive).ToListAsync());
         }
 
         // GET: User/Details/5
@@ -24,7 +24,7 @@ namespace Intranet.Controllers
             }
 
             var user = await context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (user == null)
             {
                 return NotFound();
@@ -63,7 +63,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var user = await context.User.FindAsync(id);
+            var user = await context.User.FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
             if (user == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace Intranet.Controllers
             {
                 try
                 {
-                    var userToUpdate = await context.User.FindAsync(id);
+                    var userToUpdate = await context.User.FirstOrDefaultAsync(u => u.Id == id && u.IsActive);
                     if (userToUpdate == null)
                     {
                         return NotFound();
@@ -126,7 +126,7 @@ namespace Intranet.Controllers
             }
 
             var user = await context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (user == null)
             {
                 return NotFound();
@@ -143,7 +143,8 @@ namespace Intranet.Controllers
             var user = await context.User.FindAsync(id);
             if (user != null)
             {
-                context.User.Remove(user);
+                user.IsActive = false; // Soft delete
+                context.Update(user);
             }
 
             await context.SaveChangesAsync();
@@ -152,7 +153,7 @@ namespace Intranet.Controllers
 
         private bool UserExists(int id)
         {
-            return context.User.Any(e => e.Id == id);
+            return context.User.Any(e => e.Id == id && e.IsActive);
         }
     }
 }

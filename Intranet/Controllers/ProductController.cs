@@ -14,7 +14,7 @@ namespace Intranet.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var shopMeDbContext = context.Product.Include(p => p.Category);
+            var shopMeDbContext = context.Product.Include(p => p.Category).Where(p => p.IsActive);
             return View(await shopMeDbContext.ToListAsync());
         }
 
@@ -30,7 +30,7 @@ namespace Intranet.Controllers
                 .Include(p => p.Category)
                 .Include(p => p.ProductTags!)
                     .ThenInclude(pt => pt.Tag)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (product == null)
             {
                 return NotFound();
@@ -84,7 +84,7 @@ namespace Intranet.Controllers
             var product = await context.Product
                 .Include(p => p.ProductTags!)
                     .ThenInclude(pt => pt.Tag)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
 
             if (product == null)
             {
@@ -115,7 +115,7 @@ namespace Intranet.Controllers
                 {
                     var productToUpdate = await context.Product
                         .Include(p => p.ProductTags)
-                        .FirstOrDefaultAsync(p => p.Id == id);
+                        .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
 
                     if (productToUpdate == null)
                     {
@@ -125,21 +125,22 @@ namespace Intranet.Controllers
                     context.Entry(productToUpdate).CurrentValues.SetValues(product);
 
                     selectedTagIds ??= new List<int>();
-                    var existingTagIds = productToUpdate.ProductTags?.Select(pt => pt.TagId).ToList() ?? new List<int>();
+                    var allProductTags = await context.ProductTag
+                        .IgnoreQueryFilters()
+                        .Where(pt => pt.ProductId == productToUpdate.Id)
+                        .ToListAsync();
+                    var existingTagIds = allProductTags.Select(pt => pt.TagId).ToList();
 
-                    foreach (var productTag in productToUpdate.ProductTags!.ToList())
+                    foreach (var productTag in allProductTags)
                     {
-                        if (!selectedTagIds.Contains(productTag.TagId))
-                        {
-                            context.ProductTag.Remove(productTag);
-                        }
+                        productTag.IsActive = selectedTagIds.Contains(productTag.TagId);
                     }
 
                     foreach (var tagId in selectedTagIds)
                     {
                         if (!existingTagIds.Contains(tagId))
                         {
-                            productToUpdate.ProductTags!.Add(new ProductTag { ProductId = productToUpdate.Id, TagId = tagId });
+                            context.ProductTag.Add(new ProductTag { ProductId = productToUpdate.Id, TagId = tagId });
                         }
                     }
 
@@ -178,7 +179,7 @@ namespace Intranet.Controllers
                 .Include(p => p.Category)
                 .Include(p => p.ProductTags!)
                     .ThenInclude(pt => pt.Tag)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (product == null)
             {
                 return NotFound();
@@ -193,16 +194,35 @@ namespace Intranet.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await context.Product
-                .Include(p => p.ProductTags) 
+                .Include(p => p.ProductTags)
+                .Include(p => p.ProductDetails)
+                .Include(p => p.ProductReviews)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product != null)
             {
+                product.IsActive = false;
+
                 if (product.ProductTags != null)
                 {
-                    context.ProductTag.RemoveRange(product.ProductTags);
+                    foreach (var productTag in product.ProductTags)
+                    {
+                        productTag.IsActive = false;
+                    }
                 }
-                context.Product.Remove(product);
+
+                if (product.ProductDetails != null)
+                {
+                    product.ProductDetails.IsActive = false;
+                }
+
+                if (product.ProductReviews != null)
+                {
+                    foreach (var productReview in product.ProductReviews)
+                    {
+                        productReview.IsActive = false;
+                    }
+                }
             }
 
             await context.SaveChangesAsync();
@@ -211,7 +231,7 @@ namespace Intranet.Controllers
 
         private bool ProductExists(int id)
         {
-            return context.Product.Any(e => e.Id == id);
+            return context.Product.Any(e => e.Id == id && e.IsActive);
         }
     }
 }

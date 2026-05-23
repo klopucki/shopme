@@ -43,6 +43,47 @@ namespace Core.Data
             //     .HasForeignKey<ProductDetails>(pd => pd.ProductId);
 
             base.OnModelCreating(modelBuilder);
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(ISoftDeletable).IsAssignableFrom(entityType.ClrType))
+                {
+                    modelBuilder.Entity(entityType.ClrType)
+                        .HasQueryFilter(CreateSoftDeleteFilter(entityType.ClrType));
+                }
+            }
+        }
+
+        public override int SaveChanges()
+        {
+            ApplySoftDelete();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            ApplySoftDelete();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void ApplySoftDelete()
+        {
+            foreach (var entry in ChangeTracker.Entries<ISoftDeletable>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+        }
+
+        private static System.Linq.Expressions.LambdaExpression CreateSoftDeleteFilter(Type entityType)
+        {
+            var parameter = System.Linq.Expressions.Expression.Parameter(entityType, "entity");
+            var property = System.Linq.Expressions.Expression.Property(parameter, nameof(ISoftDeletable.IsActive));
+            var body = System.Linq.Expressions.Expression.Equal(
+                property,
+                System.Linq.Expressions.Expression.Constant(true));
+
+            return System.Linq.Expressions.Expression.Lambda(body, parameter);
         }
     }
 }

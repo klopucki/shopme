@@ -1,33 +1,33 @@
 @model Core.Models.CMS.Category
 
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Edit Product Image";
 }
 
-<h1>Edit</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Edit product image</h1>
+        <p class="text-secondary mb-0">Update the product image record.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back</a>
+</div>
 
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Edit" class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger small col-12"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label"></label>
                 <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <span asp-validation-for="Name" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

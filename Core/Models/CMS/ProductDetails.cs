@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Models.CMS;
 
-public class ProductDetails
+public class ProductDetails : ISoftDeletable
 {
     [Key]
     public int Id { get; set; }
@@ -18,6 +18,8 @@ public class ProductDetails
     [Column(TypeName = "decimal(10,2)")]
     [DisplayName("Waga")]
     public decimal? Weight { get; set; }
+
+    public bool IsActive { get; set; } = true;
 
     public int ProductId { get; set; }
 

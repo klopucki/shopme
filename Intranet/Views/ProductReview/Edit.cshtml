@@ -1,47 +1,57 @@
 @model Core.Models.CMS.ProductReview
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Product Review";
 }
 
-<h1>Edit</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Edit product review</h1>
+        <p class="text-secondary mb-0">Update the review details.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>Back
+    </a>
+</div>
 
-<h4>Product Review</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Edit" class="row g-3">
+            <div asp-validation-summary="ModelOnly" class="text-danger small col-12"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="ProductId" class="control-label"></label>
-                <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
-                <span asp-validation-for="ProductId" class="text-danger"></span>
+
+            <div class="col-md-6">
+                <label asp-for="ProductId" class="form-label"></label>
+                <select asp-for="ProductId" class="form-select" asp-items="ViewBag.ProductId"></select>
+                <span asp-validation-for="ProductId" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ReviewerName" class="control-label"></label>
+
+            <div class="col-md-6">
+                <label asp-for="ReviewerName" class="form-label"></label>
                 <input asp-for="ReviewerName" class="form-control" />
-                <span asp-validation-for="ReviewerName" class="text-danger"></span>
+                <span asp-validation-for="ReviewerName" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
+
+            <div class="col-md-4">
+                <label asp-for="Rating" class="form-label"></label>
                 <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
+                <span asp-validation-for="Rating" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Comment" class="control-label"></label>
-                <textarea asp-for="Comment" class="form-control"></textarea>
-                <span asp-validation-for="Comment" class="text-danger"></span>
+
+            <div class="col-12">
+                <label asp-for="Comment" class="form-label"></label>
+                <textarea asp-for="Comment" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Comment" class="text-danger small"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="col-12 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg me-1"></i>Save
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

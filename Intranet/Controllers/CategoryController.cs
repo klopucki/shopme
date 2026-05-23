@@ -10,7 +10,7 @@ namespace Intranet.Controllers
         // GET: Category
         public async Task<IActionResult> Index()
         {
-            return View(await context.Category.ToListAsync());
+            return View(await context.Category.Where(c => c.IsActive).ToListAsync());
         }
 
         // GET: Category/Create
@@ -22,7 +22,7 @@ namespace Intranet.Controllers
         // POST: Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,IsActive")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var category = await context.Category.FindAsync(id);
+            var category = await context.Category.FirstOrDefaultAsync(c => c.Id == id && c.IsActive);
             if (category == null)
             {
                 return NotFound();
@@ -52,7 +52,7 @@ namespace Intranet.Controllers
         // POST: Category/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IsActive")] Category category)
         {
             if (id != category.Id)
             {
@@ -63,7 +63,15 @@ namespace Intranet.Controllers
             {
                 try
                 {
-                    context.Update(category);
+                    var categoryToUpdate = await context.Category.FirstOrDefaultAsync(c => c.Id == id && c.IsActive);
+                    if (categoryToUpdate == null)
+                    {
+                        return NotFound();
+                    }
+                    categoryToUpdate.Name = category.Name;
+                    categoryToUpdate.IsActive = category.IsActive; // Allow editing IsActive if needed
+                    
+                    context.Update(categoryToUpdate);
                     await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -91,7 +99,7 @@ namespace Intranet.Controllers
             }
 
             var category = await context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (category == null)
             {
                 return NotFound();
@@ -105,10 +113,43 @@ namespace Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await context.Category.FindAsync(id);
+            var category = await context.Category.FirstOrDefaultAsync(c => c.Id == id);
             if (category != null)
             {
-                context.Category.Remove(category);
+                category.IsActive = false;
+
+                var products = await context.Product
+                    .Include(p => p.ProductTags)
+                    .Include(p => p.ProductDetails)
+                    .Include(p => p.ProductReviews)
+                    .Where(p => p.CategoryId == id)
+                    .ToListAsync();
+
+                foreach (var product in products)
+                {
+                    product.IsActive = false;
+
+                    if (product.ProductTags != null)
+                    {
+                        foreach (var productTag in product.ProductTags)
+                        {
+                            productTag.IsActive = false;
+                        }
+                    }
+
+                    if (product.ProductDetails != null)
+                    {
+                        product.ProductDetails.IsActive = false;
+                    }
+
+                    if (product.ProductReviews != null)
+                    {
+                        foreach (var productReview in product.ProductReviews)
+                        {
+                            productReview.IsActive = false;
+                        }
+                    }
+                }
             }
 
             await context.SaveChangesAsync();
@@ -117,7 +158,7 @@ namespace Intranet.Controllers
 
         private bool CategoryExists(int id)
         {
-            return context.Category.Any(e => e.Id == id);
+            return context.Category.Any(e => e.Id == id && e.IsActive);
         }
     }
 }

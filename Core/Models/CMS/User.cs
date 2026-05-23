@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models.CMS;
 
-public class User
+public class User : ISoftDeletable
 {
     [Key] public int Id { get; set; }
 

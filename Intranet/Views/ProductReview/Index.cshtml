@@ -4,60 +4,56 @@
     ViewData["Title"] = "Product Reviews";
 }
 
-<h1 class="mb-4">Product Reviews</h1>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Product reviews</h1>
+        <p class="text-secondary mb-0">Review customer feedback for catalog products.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i>Create review
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary mb-3">Create New</a>
-</p>
-
-<div class="card p-4 shadow-sm">
-    <table class="table table-striped table-hover">
-        <thead>
+<div class="card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Product)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ReviewerName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Rating)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Comment)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedAt)
-                </th>
-                <th></th>
+                <th>@Html.DisplayNameFor(model => model.Product)</th>
+                <th>@Html.DisplayNameFor(model => model.ReviewerName)</th>
+                <th>@Html.DisplayNameFor(model => model.Rating)</th>
+                <th>@Html.DisplayNameFor(model => model.Comment)</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                <th class="text-end">Actions</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             @foreach (var item in Model)
             {
                 <tr>
+                    <td class="fw-semibold">@item.Product?.Name</td>
+                    <td>@Html.DisplayFor(modelItem => item.ReviewerName)</td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Product.Name)
+                        <span class="badge text-bg-warning">@Html.DisplayFor(modelItem => item.Rating) / 5</span>
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ReviewerName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Rating)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Comment)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedAt)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                    <td class="text-truncate">@Html.DisplayFor(modelItem => item.Comment)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                    <td class="text-end">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Review actions">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
             }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>

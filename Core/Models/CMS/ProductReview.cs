@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Models.CMS;
 
-public class ProductReview
+public class ProductReview : ISoftDeletable
 {
     [Key] public int Id { get; set; }
 
@@ -18,4 +18,6 @@ public class ProductReview
     [StringLength(1000)] public string? Comment { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public bool IsActive { get; set; } = true;
 }

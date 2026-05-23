@@ -10,7 +10,7 @@ namespace Intranet.Controllers
         // GET: Tag
         public async Task<IActionResult> Index()
         {
-            return View(await context.Tag.ToListAsync());
+            return View(await context.Tag.Where(t => t.IsActive).ToListAsync());
         }
 
         // GET: Tag/Details/5 
@@ -22,7 +22,7 @@ namespace Intranet.Controllers
             }
 
             var tag = await context.Tag
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (tag == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace Intranet.Controllers
         // POST: Tag/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Tag tag)
+        public async Task<IActionResult> Create([Bind("Id,Name,IsActive")] Tag tag)
         {
             if (ModelState.IsValid)
             {
@@ -59,7 +59,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var tag = await context.Tag.FindAsync(id);
+            var tag = await context.Tag.FirstOrDefaultAsync(t => t.Id == id && t.IsActive);
             if (tag == null)
             {
                 return NotFound();
@@ -70,7 +70,7 @@ namespace Intranet.Controllers
         // POST: Tag/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Tag tag)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IsActive")] Tag tag)
         {
             if (id != tag.Id)
             {
@@ -81,7 +81,15 @@ namespace Intranet.Controllers
             {
                 try
                 {
-                    context.Update(tag);
+                    var tagToUpdate = await context.Tag.FirstOrDefaultAsync(t => t.Id == id && t.IsActive);
+                    if (tagToUpdate == null)
+                    {
+                        return NotFound();
+                    }
+                    tagToUpdate.Name = tag.Name;
+                    tagToUpdate.IsActive = tag.IsActive; // Allow editing IsActive if needed, otherwise remove from bind
+                    
+                    context.Update(tagToUpdate);
                     await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -109,7 +117,7 @@ namespace Intranet.Controllers
             }
 
             var tag = await context.Tag
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (tag == null)
             {
                 return NotFound();
@@ -123,10 +131,19 @@ namespace Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tag = await context.Tag.FindAsync(id);
+            var tag = await context.Tag.FirstOrDefaultAsync(t => t.Id == id);
             if (tag != null)
             {
-                context.Tag.Remove(tag);
+                tag.IsActive = false;
+
+                var productTags = await context.ProductTag
+                    .Where(pt => pt.TagId == id)
+                    .ToListAsync();
+
+                foreach (var productTag in productTags)
+                {
+                    productTag.IsActive = false;
+                }
             }
 
             await context.SaveChangesAsync();
@@ -135,7 +152,7 @@ namespace Intranet.Controllers
 
         private bool TagExists(int id)
         {
-            return context.Tag.Any(e => e.Id == id);
+            return context.Tag.Any(e => e.Id == id && e.IsActive);
         }
     }
 }

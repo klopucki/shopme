@@ -1,28 +1,32 @@
 @model Core.Models.CMS.Category
 
 @{
-    ViewData["Title"] = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Delete Product Image";
 }
 
-<h1>Delete</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Delete product image</h1>
+        <p class="text-secondary mb-0">Confirm removal of this product image record.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back</a>
+</div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="alert alert-warning d-flex align-items-center gap-2" role="alert">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <div>Are you sure you want to delete this product image?</div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3 text-secondary">@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd class="col-sm-9 fw-semibold">@Html.DisplayFor(model => model.Name)</dd>
+        </dl>
+        <form asp-action="Delete" class="d-flex gap-2 mb-0">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Delete</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
 </div>

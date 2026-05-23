@@ -131,10 +131,10 @@ namespace Intranet.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productReview = await context.ProductReview.FindAsync(id);
+            var productReview = await context.ProductReview.FirstOrDefaultAsync(pr => pr.Id == id);
             if (productReview != null)
             {
-                context.ProductReview.Remove(productReview);
+                productReview.IsActive = false;
             }
 
             await context.SaveChangesAsync();

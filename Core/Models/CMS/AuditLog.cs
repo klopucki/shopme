@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models.CMS;
 
-public class AuditLog
+public class AuditLog : ISoftDeletable
 {
     [Key] public int Id { get; set; }
 
@@ -21,4 +21,6 @@ public class AuditLog
     public string? ExceptionDetails { get; set; }
 
     [Required] public string HttpMethod { get; set; } = string.Empty;
+
+    public bool IsActive { get; set; } = true; // not necessery for audit but leave it to be consistent with other models
 }
