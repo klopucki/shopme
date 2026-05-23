@@ -10,7 +10,7 @@ namespace Intranet.Controllers
         // GET: Tag
         public async Task<IActionResult> Index()
         {
-            return View(await context.Tag.Where(t => t.IsActive).ToListAsync());
+            return View(await context.Tag.ToListAsync());
         }
 
         // GET: Tag/Details/5 
@@ -21,8 +21,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var tag = await context.Tag
-                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
+            var tag = await context.Tag.FirstOrDefaultAsync(m => m.Id == id);
             if (tag == null)
             {
                 return NotFound();
@@ -59,7 +58,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var tag = await context.Tag.FirstOrDefaultAsync(t => t.Id == id && t.IsActive);
+            var tag = await context.Tag.FindAsync(id);
             if (tag == null)
             {
                 return NotFound();
@@ -81,7 +80,7 @@ namespace Intranet.Controllers
             {
                 try
                 {
-                    var tagToUpdate = await context.Tag.FirstOrDefaultAsync(t => t.Id == id && t.IsActive);
+                    var tagToUpdate = await context.Tag.FindAsync(id);
                     if (tagToUpdate == null)
                     {
                         return NotFound();
@@ -116,8 +115,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var tag = await context.Tag
-                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
+            var tag = await context.Tag.FirstOrDefaultAsync(m => m.Id == id);
             if (tag == null)
             {
                 return NotFound();
@@ -134,16 +132,12 @@ namespace Intranet.Controllers
             var tag = await context.Tag.FirstOrDefaultAsync(t => t.Id == id);
             if (tag != null)
             {
-                tag.IsActive = false;
-
                 var productTags = await context.ProductTag
                     .Where(pt => pt.TagId == id)
                     .ToListAsync();
 
-                foreach (var productTag in productTags)
-                {
-                    productTag.IsActive = false;
-                }
+                context.Tag.Remove(tag);
+                context.ProductTag.RemoveRange(productTags);
             }
 
             await context.SaveChangesAsync();
@@ -152,7 +146,7 @@ namespace Intranet.Controllers
 
         private bool TagExists(int id)
         {
-            return context.Tag.Any(e => e.Id == id && e.IsActive);
+            return context.Tag.Any(e => e.Id == id);
         }
     }
 }

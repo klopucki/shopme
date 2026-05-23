@@ -1,6 +1,6 @@
 namespace Core.Models.CMS;
 
-public class ProductTag : ISoftDeletable
+public class ProductTag
 {
     public int ProductId { get; set; }
     public Product Product { get; set; } = default!;

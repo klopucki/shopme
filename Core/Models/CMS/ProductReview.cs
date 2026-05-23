@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Models.CMS;
 
-public class ProductReview : ISoftDeletable
+public class ProductReview
 {
     [Key] public int Id { get; set; }
 

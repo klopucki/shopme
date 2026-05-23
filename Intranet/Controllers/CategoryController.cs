@@ -10,7 +10,7 @@ namespace Intranet.Controllers
         // GET: Category
         public async Task<IActionResult> Index()
         {
-            return View(await context.Category.Where(c => c.IsActive).ToListAsync());
+            return View(await context.Category.ToListAsync());
         }
 
         // GET: Category/Create
@@ -41,7 +41,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var category = await context.Category.FirstOrDefaultAsync(c => c.Id == id && c.IsActive);
+            var category = await context.Category.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -63,7 +63,7 @@ namespace Intranet.Controllers
             {
                 try
                 {
-                    var categoryToUpdate = await context.Category.FirstOrDefaultAsync(c => c.Id == id && c.IsActive);
+                    var categoryToUpdate = await context.Category.FindAsync(id);
                     if (categoryToUpdate == null)
                     {
                         return NotFound();
@@ -98,8 +98,7 @@ namespace Intranet.Controllers
                 return NotFound();
             }
 
-            var category = await context.Category
-                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
+            var category = await context.Category.FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -116,8 +115,6 @@ namespace Intranet.Controllers
             var category = await context.Category.FirstOrDefaultAsync(c => c.Id == id);
             if (category != null)
             {
-                category.IsActive = false;
-
                 var products = await context.Product
                     .Include(p => p.ProductTags)
                     .Include(p => p.ProductDetails)
@@ -125,29 +122,24 @@ namespace Intranet.Controllers
                     .Where(p => p.CategoryId == id)
                     .ToListAsync();
 
+                context.Category.Remove(category);
+                context.Product.RemoveRange(products);
+
                 foreach (var product in products)
                 {
-                    product.IsActive = false;
-
                     if (product.ProductTags != null)
                     {
-                        foreach (var productTag in product.ProductTags)
-                        {
-                            productTag.IsActive = false;
-                        }
+                        context.ProductTag.RemoveRange(product.ProductTags);
                     }
 
                     if (product.ProductDetails != null)
                     {
-                        product.ProductDetails.IsActive = false;
+                        context.ProductDetails.Remove(product.ProductDetails);
                     }
 
                     if (product.ProductReviews != null)
                     {
-                        foreach (var productReview in product.ProductReviews)
-                        {
-                            productReview.IsActive = false;
-                        }
+                        context.ProductReview.RemoveRange(product.ProductReviews);
                     }
                 }
             }
@@ -158,7 +150,7 @@ namespace Intranet.Controllers
 
         private bool CategoryExists(int id)
         {
-            return context.Category.Any(e => e.Id == id && e.IsActive);
+            return context.Category.Any(e => e.Id == id);
         }
     }
 }

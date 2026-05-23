@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models.CMS;
 
-public class Category : ISoftDeletable
+public class Category
 {
     [Key] public int Id { get; set; }
 

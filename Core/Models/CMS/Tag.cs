@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models.CMS;
 
-public class Tag : ISoftDeletable
+public class Tag
 {
     [Key] public int Id { get; set; }
 

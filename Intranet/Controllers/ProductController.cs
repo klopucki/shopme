@@ -14,7 +14,7 @@ namespace Intranet.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var shopMeDbContext = context.Product.Include(p => p.Category).Where(p => p.IsActive);
+            var shopMeDbContext = context.Product.Include(p => p.Category);
             return View(await shopMeDbContext.ToListAsync());
         }
 
@@ -30,7 +30,7 @@ namespace Intranet.Controllers
                 .Include(p => p.Category)
                 .Include(p => p.ProductTags!)
                     .ThenInclude(pt => pt.Tag)
-                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -84,7 +84,7 @@ namespace Intranet.Controllers
             var product = await context.Product
                 .Include(p => p.ProductTags!)
                     .ThenInclude(pt => pt.Tag)
-                .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
             {
@@ -115,7 +115,7 @@ namespace Intranet.Controllers
                 {
                     var productToUpdate = await context.Product
                         .Include(p => p.ProductTags)
-                        .FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
+                        .FirstOrDefaultAsync(p => p.Id == id);
 
                     if (productToUpdate == null)
                     {
@@ -179,7 +179,7 @@ namespace Intranet.Controllers
                 .Include(p => p.Category)
                 .Include(p => p.ProductTags!)
                     .ThenInclude(pt => pt.Tag)
-                .FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -201,27 +201,21 @@ namespace Intranet.Controllers
 
             if (product != null)
             {
-                product.IsActive = false;
+                context.Product.Remove(product);
 
                 if (product.ProductTags != null)
                 {
-                    foreach (var productTag in product.ProductTags)
-                    {
-                        productTag.IsActive = false;
-                    }
+                    context.ProductTag.RemoveRange(product.ProductTags);
                 }
 
                 if (product.ProductDetails != null)
                 {
-                    product.ProductDetails.IsActive = false;
+                    context.ProductDetails.Remove(product.ProductDetails);
                 }
 
                 if (product.ProductReviews != null)
                 {
-                    foreach (var productReview in product.ProductReviews)
-                    {
-                        productReview.IsActive = false;
-                    }
+                    context.ProductReview.RemoveRange(product.ProductReviews);
                 }
             }
 
@@ -231,7 +225,7 @@ namespace Intranet.Controllers
 
         private bool ProductExists(int id)
         {
-            return context.Product.Any(e => e.Id == id && e.IsActive);
+            return context.Product.Any(e => e.Id == id);
         }
     }
 }

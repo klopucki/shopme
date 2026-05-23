@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models.CMS;
 
-public class AuditLog : ISoftDeletable
+public class AuditLog
 {
     [Key] public int Id { get; set; }
 

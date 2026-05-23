@@ -134,7 +134,7 @@ namespace Intranet.Controllers
             var productReview = await context.ProductReview.FirstOrDefaultAsync(pr => pr.Id == id);
             if (productReview != null)
             {
-                productReview.IsActive = false;
+                context.ProductReview.Remove(productReview);
             }
 
             await context.SaveChangesAsync();

@@ -42,16 +42,17 @@ namespace Core.Data
             //     .WithOne(pd => pd.Product)
             //     .HasForeignKey<ProductDetails>(pd => pd.ProductId);
 
-            base.OnModelCreating(modelBuilder);
+            // auto add to all queries
+            modelBuilder.Entity<Product>().HasQueryFilter(p => p.IsActive);
+            modelBuilder.Entity<Category>().HasQueryFilter(c => c.IsActive);
+            modelBuilder.Entity<ProductDetails>().HasQueryFilter(pd => pd.IsActive);
+            modelBuilder.Entity<Tag>().HasQueryFilter(t => t.IsActive);
+            modelBuilder.Entity<ProductTag>().HasQueryFilter(pt => pt.IsActive);
+            modelBuilder.Entity<User>().HasQueryFilter(u => u.IsActive);
+            modelBuilder.Entity<AuditLog>().HasQueryFilter(a => a.IsActive);
+            modelBuilder.Entity<ProductReview>().HasQueryFilter(pr => pr.IsActive);
 
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                if (typeof(ISoftDeletable).IsAssignableFrom(entityType.ClrType))
-                {
-                    modelBuilder.Entity(entityType.ClrType)
-                        .HasQueryFilter(CreateSoftDeleteFilter(entityType.ClrType));
-                }
-            }
+            base.OnModelCreating(modelBuilder);
         }
 
         public override int SaveChanges()
@@ -68,22 +69,53 @@ namespace Core.Data
 
         private void ApplySoftDelete()
         {
-            foreach (var entry in ChangeTracker.Entries<ISoftDeletable>().Where(e => e.State == EntityState.Deleted))
+            foreach (var entry in ChangeTracker.Entries<Product>().Where(e => e.State == EntityState.Deleted))
             {
                 entry.State = EntityState.Modified;
                 entry.Entity.IsActive = false;
             }
-        }
 
-        private static System.Linq.Expressions.LambdaExpression CreateSoftDeleteFilter(Type entityType)
-        {
-            var parameter = System.Linq.Expressions.Expression.Parameter(entityType, "entity");
-            var property = System.Linq.Expressions.Expression.Property(parameter, nameof(ISoftDeletable.IsActive));
-            var body = System.Linq.Expressions.Expression.Equal(
-                property,
-                System.Linq.Expressions.Expression.Constant(true));
+            foreach (var entry in ChangeTracker.Entries<Category>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
 
-            return System.Linq.Expressions.Expression.Lambda(body, parameter);
+            foreach (var entry in ChangeTracker.Entries<ProductDetails>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<Tag>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<ProductTag>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<User>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<AuditLog>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<ProductReview>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Models.CMS;
 
-public class ProductDetails : ISoftDeletable
+public class ProductDetails
 {
     [Key]
     public int Id { get; set; }
