@@ -1,0 +1,35 @@
+@model Core.Models.CMS.Ranking
+
+<div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+<div class="mb-3">
+    <label asp-for="Title" class="form-label"></label>
+    <input asp-for="Title" class="form-control" />
+    <span asp-validation-for="Title" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Slug" class="form-label"></label>
+    <input asp-for="Slug" class="form-control" />
+    <span asp-validation-for="Slug" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Summary" class="form-label"></label>
+    <textarea asp-for="Summary" class="form-control" rows="3"></textarea>
+    <span asp-validation-for="Summary" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="PublishedAt" class="form-label"></label>
+    <input asp-for="PublishedAt" class="form-control" type="datetime-local" />
+    <span asp-validation-for="PublishedAt" class="text-danger"></span>
+</div>
+<div class="form-check mb-2">
+    <input asp-for="IsPublished" class="form-check-input" />
+    <label asp-for="IsPublished" class="form-check-label"></label>
+</div>
+<div class="form-check mb-2">
+    <input asp-for="IsFeatured" class="form-check-input" />
+    <label asp-for="IsFeatured" class="form-check-label"></label>
+</div>
+<div class="form-check mb-3">
+    <input asp-for="IsActive" class="form-check-input" />
+    <label asp-for="IsActive" class="form-check-label"></label>
+</div>

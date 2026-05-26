@@ -1,0 +1,39 @@
+@model Core.Models.CMS.Article
+@using Core.Models.CMS
+
+@{
+    ViewData["Title"] = "Edit Article";
+    var articleTags = ViewBag.ArticleTags as List<ArticleTag> ?? [];
+    var selectedTagIds = ViewBag.SelectedTagIds as List<int> ?? [];
+}
+
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+
+<h1 class="h3 mb-4">Edit Article</h1>
+
+<div class="card p-4 shadow-sm">
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+        @await Html.PartialAsync("_ArticleForm", Model)
+        <div class="mb-3">
+            <label class="form-label">Tags</label>
+            <div class="d-flex flex-wrap gap-3">
+                @foreach (var tag in articleTags)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="selectedTagIds" value="@tag.Id" checked="@selectedTagIds.Contains(tag.Id)" id="tag-@tag.Id">
+                        <label class="form-check-label" for="tag-@tag.Id">@tag.Name</label>
+                    </div>
+                }
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{ await Html.RenderPartialAsync("_ArticleEditorScripts"); }
+}

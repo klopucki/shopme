@@ -1,0 +1,29 @@
+@model Core.Models.CMS.Article
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<article class="container py-5">
+    <div class="mx-auto article-detail">
+        <p class="text-muted small mb-2">@Model.ArticleCategory?.Name · @Model.PublishedAt.ToString("MMM d, yyyy")</p>
+        <h1 class="fw-bold mb-3">@Model.Title</h1>
+        <p class="lead text-muted">@Model.Summary</p>
+
+        <img src="@(string.IsNullOrWhiteSpace(Model.ImageUrl) ? $"https://picsum.photos/seed/article-detail-{Model.Id}/1200/600" : Model.ImageUrl)" class="img-fluid rounded-3 shadow-sm my-4" alt="@Model.Title">
+
+        <div class="article-content">
+            @Html.Raw(Model.Content)
+        </div>
+
+        @if (Model.ArticleTagAssignments?.Any() == true)
+        {
+            <div class="mt-4">
+                @foreach (var tag in Model.ArticleTagAssignments.Select(item => item.ArticleTag).Where(item => item != null))
+                {
+                    <span class="badge text-bg-light me-2">#@tag!.Name</span>
+                }
+            </div>
+        }
+    </div>
+</article>

@@ -24,6 +24,13 @@ public class Product
 
     [DisplayName("Ilość sztuk")] public int Quantity { get; set; }
 
+    [DisplayName("Featured")]
+    public bool IsFeatured { get; set; }
+
+    [StringLength(500)]
+    [DisplayName("Image URL")]
+    public string? ImageUrl { get; set; }
+
     public int CategoryId { get; set; }
 
     [ForeignKey("CategoryId")] public Category? Category { get; set; }

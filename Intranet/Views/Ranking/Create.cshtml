@@ -1,0 +1,17 @@
+@model Core.Models.CMS.Ranking
+
+@{
+    ViewData["Title"] = "Create Ranking";
+}
+
+<h1 class="h3 mb-4">Create Ranking</h1>
+
+<div class="card p-4 shadow-sm">
+    <form asp-action="Create">
+        @await Html.PartialAsync("_RankingForm", Model)
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

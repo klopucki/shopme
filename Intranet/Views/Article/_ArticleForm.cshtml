@@ -1,0 +1,57 @@
+@model Core.Models.CMS.Article
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Slug" class="form-label"></label>
+            <input asp-for="Slug" class="form-control" />
+            <span asp-validation-for="Slug" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Summary" class="form-label"></label>
+            <textarea asp-for="Summary" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Summary" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Content" class="form-label"></label>
+            <textarea asp-for="Content" class="form-control d-none rich-content-input" rows="10"></textarea>
+            <div id="articleContentEditor" class="bg-white" style="min-height: 320px;"></div>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="mb-3">
+            <label asp-for="ArticleCategoryId" class="form-label">Category</label>
+            <select asp-for="ArticleCategoryId" class="form-select" asp-items="ViewBag.ArticleCategoryId"></select>
+            <span asp-validation-for="ArticleCategoryId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ImageUrl" class="form-label"></label>
+            <input asp-for="ImageUrl" class="form-control" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PublishedAt" class="form-label"></label>
+            <input asp-for="PublishedAt" class="form-control" type="datetime-local" />
+            <span asp-validation-for="PublishedAt" class="text-danger"></span>
+        </div>
+        <div class="form-check mb-2">
+            <input asp-for="IsPublished" class="form-check-input" />
+            <label asp-for="IsPublished" class="form-check-label"></label>
+        </div>
+        <div class="form-check mb-2">
+            <input asp-for="IsFeatured" class="form-check-input" />
+            <label asp-for="IsFeatured" class="form-check-label"></label>
+        </div>
+        <div class="form-check mb-3">
+            <input asp-for="IsActive" class="form-check-input" />
+            <label asp-for="IsActive" class="form-check-label"></label>
+        </div>
+        <input type="hidden" asp-for="CreatedAt" />
+    </div>
+</div>

@@ -1,0 +1,59 @@
+@model Core.Models.CMS.Product
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-6">
+            <img src="@(string.IsNullOrWhiteSpace(Model.ImageUrl) ? Url.Content("~/images/product-placeholder.svg") : Model.ImageUrl)" class="img-fluid rounded-3 shadow-sm product-detail-image" alt="@Model.Name">
+        </div>
+        <div class="col-lg-6">
+            <p class="text-muted mb-2">@Model.Category?.Name</p>
+            <h1 class="fw-bold">@Model.Name</h1>
+            <div class="fs-3 fw-bold text-primary my-3">@Model.Price.ToString("C")</div>
+
+            @if (Model.ProductTags?.Any() == true)
+            {
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    @foreach (var productTag in Model.ProductTags)
+                    {
+                        <a asp-action="Index" asp-route-tagId="@productTag.TagId" class="badge text-bg-light text-decoration-none">#@productTag.Tag.Name</a>
+                    }
+                </div>
+            }
+
+            <p class="text-muted">@(Model.ProductDetails?.Description ?? "Product details will appear here after they are added in the intranet.")</p>
+
+            <dl class="row small text-muted my-4">
+                <dt class="col-sm-4">Manufacturer</dt>
+                <dd class="col-sm-8">@(Model.ProductDetails?.Manufacturer ?? "-")</dd>
+                <dt class="col-sm-4">Stock</dt>
+                <dd class="col-sm-8">@Model.Quantity</dd>
+                <dt class="col-sm-4">Weight</dt>
+                <dd class="col-sm-8">@(Model.ProductDetails?.Weight?.ToString() ?? "-")</dd>
+            </dl>
+
+            <form asp-controller="Cart" asp-action="Add" method="post" class="mb-4">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <button class="btn btn-dark btn-lg rounded-pill px-5" type="submit">Add to Cart</button>
+            </form>
+
+            @if (Model.ProductReviews?.Any() == true)
+            {
+                <h2 class="h5 fw-bold mt-5">Customer Reviews</h2>
+                <div class="vstack gap-3">
+                    @foreach (var review in Model.ProductReviews)
+                    {
+                        <div class="border rounded-3 p-3">
+                            <div class="fw-semibold">@review.ReviewerName</div>
+                            <div class="text-muted small mb-2">Rating: @review.Rating / 5</div>
+                            <p class="mb-0">@review.Comment</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

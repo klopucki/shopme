@@ -1,0 +1,29 @@
+@model IEnumerable<Core.Models.CMS.Article>
+
+@{
+    ViewData["Title"] = "Blog";
+}
+
+<div class="container py-5">
+    <div class="mb-5">
+        <h1 class="fw-bold">Blog</h1>
+        <p class="text-muted mb-0">Guides, news and buying inspiration from SHOP.ME.</p>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var article in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <article class="card h-100 border-0 shadow-sm overflow-hidden">
+                    <img src="@(string.IsNullOrWhiteSpace(article.ImageUrl) ? $"https://picsum.photos/seed/article-list-{article.Id}/600/360" : article.ImageUrl)" class="card-img-top article-card-image" alt="@article.Title">
+                    <div class="card-body">
+                        <p class="text-muted small mb-2">@article.ArticleCategory?.Name · @article.PublishedAt.ToString("MMM d, yyyy")</p>
+                        <h2 class="h5 fw-bold">@article.Title</h2>
+                        <p class="text-muted">@article.Summary</p>
+                        <a asp-action="Details" asp-route-slug="@article.Slug" class="stretched-link text-decoration-none fw-semibold">Read article</a>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+</div>

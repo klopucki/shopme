@@ -1,0 +1,25 @@
+@model Core.Models.CMS.ArticleTag
+
+@{
+    ViewData["Title"] = "Create Article Tag";
+}
+
+<h1 class="h3 mb-4">Create Article Tag</h1>
+
+<div class="card p-4 shadow-sm">
+    <form asp-action="Create">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-check mb-3">
+            <input asp-for="IsActive" class="form-check-input" />
+            <label asp-for="IsActive" class="form-check-label"></label>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

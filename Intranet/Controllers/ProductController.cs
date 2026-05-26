@@ -50,7 +50,7 @@ namespace Intranet.Controllers
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,IsActive,CreatedAt,ActiveUntil,Quantity,CategoryId")] Product product, List<int>? selectedTagIds)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,IsActive,CreatedAt,ActiveUntil,Quantity,IsFeatured,ImageUrl,CategoryId")] Product product, List<int>? selectedTagIds)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace Intranet.Controllers
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,IsActive,CreatedAt,ActiveUntil,Quantity,CategoryId")] Product product, List<int>? selectedTagIds)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,IsActive,CreatedAt,ActiveUntil,Quantity,IsFeatured,ImageUrl,CategoryId")] Product product, List<int>? selectedTagIds)
         {
             if (id != product.Id)
             {

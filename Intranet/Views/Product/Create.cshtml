@@ -51,9 +51,23 @@
             </div>
 
             <div class="col-12">
+                <label asp-for="ImageUrl" class="form-label"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="https://images.unsplash.com/..." />
+                <div class="form-text">Use a direct image URL, for example a link starting with https://images.unsplash.com/.</div>
+                <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
                 <div class="form-check form-switch">
                     <input class="form-check-input" asp-for="IsActive" />
                     <label class="form-check-label" asp-for="IsActive"></label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" asp-for="IsFeatured" />
+                    <label class="form-check-label" asp-for="IsFeatured"></label>
                 </div>
             </div>
 

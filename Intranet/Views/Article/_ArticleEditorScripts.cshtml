@@ -1,0 +1,31 @@
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script>
+    (() => {
+        const contentInput = document.querySelector('.rich-content-input');
+        const editorElement = document.querySelector('#articleContentEditor');
+        const form = contentInput?.closest('form');
+
+        if (!contentInput || !editorElement || !form || !window.Quill) {
+            return;
+        }
+
+        const quill = new Quill(editorElement, {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ header: [2, 3, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link', 'blockquote', 'code-block'],
+                    ['clean']
+                ]
+            }
+        });
+
+        quill.root.innerHTML = contentInput.value || '';
+
+        form.addEventListener('submit', () => {
+            contentInput.value = quill.root.innerHTML;
+        });
+    })();
+</script>

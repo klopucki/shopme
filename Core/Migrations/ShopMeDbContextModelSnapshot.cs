@@ -22,6 +22,127 @@ namespace Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Core.Models.CMS.Article", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArticleCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PublishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(180)
+                        .HasColumnType("nvarchar(180)");
+
+                    b.Property<string>("Summary")
+                        .IsRequired()
+                        .HasMaxLength(360)
+                        .HasColumnType("nvarchar(360)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("nvarchar(160)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleCategoryId");
+
+                    b.ToTable("Article");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.ArticleCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ArticleCategory");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.ArticleTag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ArticleTag");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.ArticleTagAssignment", b =>
+                {
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArticleTagId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ArticleId", "ArticleTagId");
+
+                    b.HasIndex("ArticleTagId");
+
+                    b.ToTable("ArticleTagAssignment");
+                });
+
             modelBuilder.Entity("Core.Models.CMS.AuditLog", b =>
                 {
                     b.Property<int>("Id")
@@ -103,7 +224,14 @@ namespace Core.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFeatured")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -208,6 +336,85 @@ namespace Core.Migrations
                     b.ToTable("ProductTag");
                 });
 
+            modelBuilder.Entity("Core.Models.CMS.Ranking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PublishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(180)
+                        .HasColumnType("nvarchar(180)");
+
+                    b.Property<string>("Summary")
+                        .HasMaxLength(360)
+                        .HasColumnType("nvarchar(360)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(140)
+                        .HasColumnType("nvarchar(140)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ranking");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.RankingItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RankingId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Score")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Summary")
+                        .HasMaxLength(360)
+                        .HasColumnType("nvarchar(360)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(140)
+                        .HasColumnType("nvarchar(140)");
+
+                    b.Property<string>("Url")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RankingId");
+
+                    b.ToTable("RankingItem");
+                });
+
             modelBuilder.Entity("Core.Models.CMS.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -263,6 +470,36 @@ namespace Core.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Core.Models.CMS.Article", b =>
+                {
+                    b.HasOne("Core.Models.CMS.ArticleCategory", "ArticleCategory")
+                        .WithMany("Articles")
+                        .HasForeignKey("ArticleCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ArticleCategory");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.ArticleTagAssignment", b =>
+                {
+                    b.HasOne("Core.Models.CMS.Article", "Article")
+                        .WithMany("ArticleTagAssignments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Models.CMS.ArticleTag", "ArticleTag")
+                        .WithMany("ArticleTagAssignments")
+                        .HasForeignKey("ArticleTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("ArticleTag");
+                });
+
             modelBuilder.Entity("Core.Models.CMS.Product", b =>
                 {
                     b.HasOne("Core.Models.CMS.Category", "Category")
@@ -315,6 +552,32 @@ namespace Core.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("Core.Models.CMS.RankingItem", b =>
+                {
+                    b.HasOne("Core.Models.CMS.Ranking", "Ranking")
+                        .WithMany("RankingItems")
+                        .HasForeignKey("RankingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ranking");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.Article", b =>
+                {
+                    b.Navigation("ArticleTagAssignments");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.ArticleCategory", b =>
+                {
+                    b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.ArticleTag", b =>
+                {
+                    b.Navigation("ArticleTagAssignments");
+                });
+
             modelBuilder.Entity("Core.Models.CMS.Product", b =>
                 {
                     b.Navigation("ProductDetails");
@@ -322,6 +585,11 @@ namespace Core.Migrations
                     b.Navigation("ProductReviews");
 
                     b.Navigation("ProductTags");
+                });
+
+            modelBuilder.Entity("Core.Models.CMS.Ranking", b =>
+                {
+                    b.Navigation("RankingItems");
                 });
 
             modelBuilder.Entity("Core.Models.CMS.Tag", b =>

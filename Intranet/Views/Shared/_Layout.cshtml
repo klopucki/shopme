@@ -58,6 +58,34 @@
                     </li>
 
                     <li class="mt-4 px-3 mb-1 text-uppercase text-muted fw-bold small">
+                        Portal
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Article" ? "active" : "opacity-75")"
+                           asp-controller="Article" asp-action="Index">
+                            <i class="bi bi-newspaper me-2"></i> Articles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "ArticleCategory" ? "active" : "opacity-75")"
+                           asp-controller="ArticleCategory" asp-action="Index">
+                            <i class="bi bi-folder2-open me-2"></i> Article Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "ArticleTag" ? "active" : "opacity-75")"
+                           asp-controller="ArticleTag" asp-action="Index">
+                            <i class="bi bi-hash me-2"></i> Article Tags
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Ranking" || ViewContext.RouteData.Values["controller"]?.ToString() == "RankingItem" ? "active" : "opacity-75")"
+                           asp-controller="Ranking" asp-action="Index">
+                            <i class="bi bi-trophy me-2"></i> Rankings
+                        </a>
+                    </li>
+
+                    <li class="mt-4 px-3 mb-1 text-uppercase text-muted fw-bold small">
                         Admin
                     </li>
                     <li class="nav-item">

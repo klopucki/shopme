@@ -1,0 +1,75 @@
+@model Client.Models.ProductListViewModel
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container py-5">
+    <div class="d-flex flex-column flex-lg-row justify-content-between gap-3 mb-4">
+        <div>
+            <h1 class="fw-bold">Products</h1>
+            <p class="text-muted mb-0">Browse products by category, tag or search phrase.</p>
+        </div>
+        <form asp-action="Index" method="get" class="d-flex gap-2 product-search">
+            <input type="search" name="search" value="@Model.Search" class="form-control rounded-pill" placeholder="Search products">
+            <button class="btn btn-dark rounded-pill px-4" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="row g-4">
+        <aside class="col-lg-3">
+            <div class="border rounded-3 p-3 mb-3">
+                <h2 class="h6 fw-bold mb-3">Categories</h2>
+                <div class="list-group list-group-flush">
+                    <a asp-action="Index" asp-route-tagId="@Model.TagId" asp-route-search="@Model.Search" class="list-group-item list-group-item-action @(Model.CategoryId == null ? "active" : "")">All Categories</a>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <a asp-action="Index" asp-route-categoryId="@category.Id" asp-route-tagId="@Model.TagId" asp-route-search="@Model.Search" class="list-group-item list-group-item-action @(Model.CategoryId == category.Id ? "active" : "")">@category.Name</a>
+                    }
+                </div>
+            </div>
+
+            <div class="border rounded-3 p-3">
+                <h2 class="h6 fw-bold mb-3">Tags</h2>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <a asp-action="Index" asp-route-categoryId="@Model.CategoryId" asp-route-tagId="@tag.Id" asp-route-search="@Model.Search" class="btn btn-sm @(Model.TagId == tag.Id ? "btn-dark" : "btn-outline-dark") rounded-pill">#@tag.Name</a>
+                    }
+                </div>
+            </div>
+        </aside>
+
+        <section class="col-lg-9">
+            <div class="row g-4">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                            <img src="@(string.IsNullOrWhiteSpace(product.ImageUrl) ? Url.Content("~/images/product-placeholder.svg") : product.ImageUrl)" class="card-img-top product-card-image" alt="@product.Name">
+                            <div class="card-body">
+                                <p class="text-muted small mb-1">@product.Category?.Name</p>
+                                <h2 class="h6 fw-bold">
+                                    <a asp-action="Details" asp-route-id="@product.Id" class="text-dark text-decoration-none">@product.Name</a>
+                                </h2>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-primary fw-bold">@product.Price.ToString("C")</span>
+                                    
+                                    @* Doesn't work and I think I don't need it. *@
+                                    @if (product.IsFeatured)
+                                    {
+                                        <span class="badge text-bg-danger">Featured</span>
+                                    }
+                                </div>
+                                <form asp-controller="Cart" asp-action="Add" method="post">
+                                    <input type="hidden" name="productId" value="@product.Id" />
+                                    <button class="btn btn-dark w-100 rounded-pill" type="submit">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+</div>

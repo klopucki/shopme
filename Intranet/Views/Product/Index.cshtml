@@ -25,6 +25,7 @@
                 <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
                 <th>@Html.DisplayNameFor(model => model.ActiveUntil)</th>
                 <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                <th>@Html.DisplayNameFor(model => model.IsFeatured)</th>
                 <th>@Html.DisplayNameFor(model => model.Category)</th>
                 <th class="text-end">Actions</th>
             </tr>
@@ -43,6 +44,11 @@
                     <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
                     <td>@Html.DisplayFor(modelItem => item.ActiveUntil)</td>
                     <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                    <td>
+                        <span class="badge @(item.IsFeatured ? "text-bg-danger" : "text-bg-secondary")">
+                            @(item.IsFeatured ? "Featured" : "Regular")
+                        </span>
+                    </td>
                     <td>@item.Category?.Name</td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm" role="group" aria-label="Product actions">

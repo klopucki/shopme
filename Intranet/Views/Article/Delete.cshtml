@@ -1,0 +1,16 @@
+@model Core.Models.CMS.Article
+
+@{
+    ViewData["Title"] = "Delete Article";
+}
+
+<h1 class="h3 mb-4">Delete Article</h1>
+
+<div class="card p-4 shadow-sm">
+    <p>Are you sure you want to delete <strong>@Model.Title</strong>?</p>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>

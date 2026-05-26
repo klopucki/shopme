@@ -1,0 +1,29 @@
+@model IReadOnlyList<Core.Models.CMS.Category>
+
+<section class="mb-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold mb-3">Popular Categories</h2>
+        <hr class="mx-auto border-primary border-3 opacity-100" style="width: 50px;">
+    </div>
+    <div class="row g-4 text-center justify-content-center">
+        @if (Model.Any())
+        {
+            foreach (var category in Model)
+            {
+                <div class="col-6 col-md-2 position-relative">
+                    <div class="p-4 rounded-circle bg-light mb-3 mx-auto shadow-sm d-flex align-items-center justify-content-center category-icon">
+                        <i class="bi bi-tag fs-1"></i>
+                    </div>
+                    <h6 class="fw-bold">@category.Name</h6>
+                    <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.Id" class="stretched-link"></a>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p class="text-muted mb-0">Categories will appear here after they are added in the intranet.</p>
+            </div>
+        }
+    </div>
+</section>

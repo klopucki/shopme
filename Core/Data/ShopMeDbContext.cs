@@ -13,6 +13,12 @@ namespace Core.Data
         public DbSet<User> User { get; set; } = default!;
         public DbSet<AuditLog> AuditLog { get; set; } = default!;
         public DbSet<ProductReview> ProductReview { get; set; } = default!; // Added DbSet for ProductReview
+        public DbSet<ArticleCategory> ArticleCategory { get; set; } = default!;
+        public DbSet<Article> Article { get; set; } = default!;
+        public DbSet<ArticleTag> ArticleTag { get; set; } = default!;
+        public DbSet<ArticleTagAssignment> ArticleTagAssignment { get; set; } = default!;
+        public DbSet<Ranking> Ranking { get; set; } = default!;
+        public DbSet<RankingItem> RankingItem { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +42,29 @@ namespace Core.Data
                 .WithMany(p => p.ProductReviews)
                 .HasForeignKey(pr => pr.ProductId);
 
+            modelBuilder.Entity<ArticleTagAssignment>()
+                .HasKey(ata => new { ata.ArticleId, ata.ArticleTagId });
+
+            modelBuilder.Entity<ArticleTagAssignment>()
+                .HasOne(ata => ata.Article)
+                .WithMany(a => a.ArticleTagAssignments)
+                .HasForeignKey(ata => ata.ArticleId);
+
+            modelBuilder.Entity<ArticleTagAssignment>()
+                .HasOne(ata => ata.ArticleTag)
+                .WithMany(at => at.ArticleTagAssignments)
+                .HasForeignKey(ata => ata.ArticleTagId);
+
+            modelBuilder.Entity<Article>()
+                .HasOne(a => a.ArticleCategory)
+                .WithMany(ac => ac.Articles)
+                .HasForeignKey(a => a.ArticleCategoryId);
+
+            modelBuilder.Entity<RankingItem>()
+                .HasOne(ri => ri.Ranking)
+                .WithMany(r => r.RankingItems)
+                .HasForeignKey(ri => ri.RankingId);
+
             // Optional: one-to-one but ef did it for me already ...
             // modelBuilder.Entity<Product>()
             //     .HasOne(p => p.ProductDetails)
@@ -51,6 +80,12 @@ namespace Core.Data
             modelBuilder.Entity<User>().HasQueryFilter(u => u.IsActive);
             modelBuilder.Entity<AuditLog>().HasQueryFilter(a => a.IsActive);
             modelBuilder.Entity<ProductReview>().HasQueryFilter(pr => pr.IsActive);
+            modelBuilder.Entity<ArticleCategory>().HasQueryFilter(ac => ac.IsActive);
+            modelBuilder.Entity<Article>().HasQueryFilter(a => a.IsActive);
+            modelBuilder.Entity<ArticleTag>().HasQueryFilter(at => at.IsActive);
+            modelBuilder.Entity<ArticleTagAssignment>().HasQueryFilter(ata => ata.IsActive);
+            modelBuilder.Entity<Ranking>().HasQueryFilter(r => r.IsActive);
+            modelBuilder.Entity<RankingItem>().HasQueryFilter(ri => ri.IsActive);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -112,6 +147,42 @@ namespace Core.Data
             }
 
             foreach (var entry in ChangeTracker.Entries<ProductReview>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<ArticleCategory>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<Article>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<ArticleTag>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<ArticleTagAssignment>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<Ranking>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<RankingItem>().Where(e => e.State == EntityState.Deleted))
             {
                 entry.State = EntityState.Modified;
                 entry.Entity.IsActive = false;
