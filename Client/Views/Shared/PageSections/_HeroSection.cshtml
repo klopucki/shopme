@@ -1,0 +1,23 @@
+@model Core.Models.CMS.PageSection
+
+<section class="mb-5">
+    <div class="container-fluid p-0">
+        <div class="position-relative overflow-hidden p-5 bg-dark text-white text-center d-flex align-items-center justify-content-center"
+             style="background: linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)), url('@(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "https://picsum.photos/id/96/1920/650" : Model.ImageUrl)') center/cover no-repeat; min-height: 460px;">
+            <div class="col-md-8 py-5 mx-auto">
+                @if (!string.IsNullOrWhiteSpace(Model.Title))
+                {
+                    <h1 class="display-4 fw-bold mb-3">@Model.Title</h1>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.Content))
+                {
+                    <div class="lead mb-4 px-lg-5">@Html.Raw(Model.Content)</div>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.ButtonText) && !string.IsNullOrWhiteSpace(Model.ButtonUrl))
+                {
+                    <a class="btn btn-light btn-lg px-5 py-3 fw-bold rounded-pill shadow-sm" href="@Model.ButtonUrl">@Model.ButtonText</a>
+                }
+            </div>
+        </div>
+    </div>
+</section>

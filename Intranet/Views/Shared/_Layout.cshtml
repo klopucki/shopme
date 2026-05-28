@@ -67,6 +67,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Page" || ViewContext.RouteData.Values["controller"]?.ToString() == "PageSection" ? "active" : "opacity-75")"
+                           asp-controller="Page" asp-action="Index">
+                            <i class="bi bi-file-earmark-richtext me-2"></i> Pages
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "ArticleCategory" ? "active" : "opacity-75")"
                            asp-controller="ArticleCategory" asp-action="Index">
                             <i class="bi bi-folder2-open me-2"></i> Article Categories

@@ -1,0 +1,21 @@
+@model Core.Models.CMS.PageSection
+
+@{
+    ViewData["Title"] = "Edit Section";
+}
+
+<h1 class="h3 mb-4">Edit Section</h1>
+
+<div class="card p-4 shadow-sm">
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+        @await Html.PartialAsync("_PageSectionForm", Model)
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-controller="Page" asp-action="Details" asp-route-id="@Model.PageId" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

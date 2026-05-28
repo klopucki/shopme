@@ -1,0 +1,8 @@
+@model IReadOnlyList<Core.Models.CMS.Page>
+
+@foreach (var navPage in Model)
+{
+    <li class="nav-item">
+        <a class="nav-link px-3 fw-medium" asp-controller="Page" asp-action="Details" asp-route-slug="@navPage.Slug">@navPage.Title</a>
+    </li>
+}

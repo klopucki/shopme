@@ -19,6 +19,8 @@ namespace Core.Data
         public DbSet<ArticleTagAssignment> ArticleTagAssignment { get; set; } = default!;
         public DbSet<Ranking> Ranking { get; set; } = default!;
         public DbSet<RankingItem> RankingItem { get; set; } = default!;
+        public DbSet<Page> Page { get; set; } = default!;
+        public DbSet<PageSection> PageSection { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -65,6 +67,11 @@ namespace Core.Data
                 .WithMany(r => r.RankingItems)
                 .HasForeignKey(ri => ri.RankingId);
 
+            modelBuilder.Entity<PageSection>()
+                .HasOne(ps => ps.Page)
+                .WithMany(p => p.PageSections)
+                .HasForeignKey(ps => ps.PageId);
+
             // Optional: one-to-one but ef did it for me already ...
             // modelBuilder.Entity<Product>()
             //     .HasOne(p => p.ProductDetails)
@@ -86,6 +93,8 @@ namespace Core.Data
             modelBuilder.Entity<ArticleTagAssignment>().HasQueryFilter(ata => ata.IsActive);
             modelBuilder.Entity<Ranking>().HasQueryFilter(r => r.IsActive);
             modelBuilder.Entity<RankingItem>().HasQueryFilter(ri => ri.IsActive);
+            modelBuilder.Entity<Page>().HasQueryFilter(p => p.IsActive);
+            modelBuilder.Entity<PageSection>().HasQueryFilter(ps => ps.IsActive);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -183,6 +192,18 @@ namespace Core.Data
             }
 
             foreach (var entry in ChangeTracker.Entries<RankingItem>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<Page>().Where(e => e.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsActive = false;
+            }
+
+            foreach (var entry in ChangeTracker.Entries<PageSection>().Where(e => e.State == EntityState.Deleted))
             {
                 entry.State = EntityState.Modified;
                 entry.Entity.IsActive = false;

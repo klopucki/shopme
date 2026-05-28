@@ -1,0 +1,19 @@
+@model Core.Models.CMS.PageSection
+
+@{
+    ViewData["Title"] = "Delete Section";
+}
+
+<h1 class="h3 mb-4">Delete Section</h1>
+
+<div class="alert alert-warning">Are you sure you want to delete this section?</div>
+
+<div class="card p-4 shadow-sm">
+    <h2 class="h5">@Model.Title</h2>
+    <p class="text-secondary mb-4">@Model.Type on @Model.Page?.Title</p>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-controller="Page" asp-action="Details" asp-route-id="@Model.PageId" class="btn btn-secondary">Back</a>
+    </form>
+</div>

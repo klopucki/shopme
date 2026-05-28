@@ -1,0 +1,43 @@
+@model Client.Models.PageRenderViewModel
+@using Core.Models.CMS
+
+@{
+    ViewData["Title"] = Model.Page.Title;
+    var sections = Model.Page.PageSections?.OrderBy(item => item.SortOrder).ToList() ?? [];
+}
+
+@if (!sections.Any())
+{
+    <section class="container py-5">
+        <h1 class="fw-bold">@Model.Page.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Page.Summary))
+        {
+            <p class="lead text-muted">@Model.Page.Summary</p>
+        }
+    </section>
+}
+
+@foreach (var pageSection in sections)
+{
+    switch (pageSection.Type)
+    {
+        case PageSectionTypes.Hero:
+            @await Html.PartialAsync("PageSections/_HeroSection", pageSection)
+            break;
+        case PageSectionTypes.ImageText:
+            @await Html.PartialAsync("PageSections/_ImageTextSection", pageSection)
+            break;
+        case PageSectionTypes.FeaturedProducts:
+            @await Html.PartialAsync("_FeaturedProducts", Model.FeaturedProducts)
+            break;
+        case PageSectionTypes.LatestArticles:
+            @await Html.PartialAsync("_LatestArticles", Model.LatestArticles)
+            break;
+        case PageSectionTypes.FeaturedRankings:
+            @await Html.PartialAsync("_FeaturedRankings", Model.FeaturedRankings)
+            break;
+        default:
+            @await Html.PartialAsync("PageSections/_TextSection", pageSection)
+            break;
+    }
+}
