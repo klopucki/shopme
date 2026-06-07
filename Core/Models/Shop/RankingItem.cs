@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Core.Models.CMS;
+namespace Core.Models.Shop;
 
 public class RankingItem
 {
@@ -35,3 +35,4 @@ public class RankingItem
     [ForeignKey("RankingId")]
     public Ranking? Ranking { get; set; }
 }
+

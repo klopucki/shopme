@@ -1,5 +1,5 @@
 using Core.Data;
-using Core.Models.CMS;
+using Core.Models.Shop;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

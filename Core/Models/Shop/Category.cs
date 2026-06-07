@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Models.CMS;
+namespace Core.Models.Shop;
 
 public class Category
 {
@@ -13,3 +13,4 @@ public class Category
 
     public bool IsActive { get; set; } = true;
 }
+

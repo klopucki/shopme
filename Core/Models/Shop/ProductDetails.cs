@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Core.Models.CMS;
+namespace Core.Models.Shop;
 
 public class ProductDetails
 {
@@ -26,3 +26,4 @@ public class ProductDetails
     [ForeignKey("ProductId")]
     public Product? Product { get; set; }
 }
+

@@ -1,4 +1,4 @@
-namespace Core.Models.CMS;
+namespace Core.Models.Shop;
 
 public class ProductTag
 {
@@ -10,3 +10,4 @@ public class ProductTag
 
     public bool IsActive { get; set; } = true;
 }
+

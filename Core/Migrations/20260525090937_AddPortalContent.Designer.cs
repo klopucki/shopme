@@ -210,7 +210,7 @@ namespace Core.Migrations
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.Product", b =>
+            modelBuilder.Entity("Core.Models.Shop.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,7 +247,7 @@ namespace Core.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.ProductDetails", b =>
+            modelBuilder.Entity("Core.Models.Shop.ProductDetails", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -278,7 +278,7 @@ namespace Core.Migrations
                     b.ToTable("ProductDetails");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.ProductReview", b =>
+            modelBuilder.Entity("Core.Models.Shop.ProductReview", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -314,7 +314,7 @@ namespace Core.Migrations
                     b.ToTable("ProductReview");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.ProductTag", b =>
+            modelBuilder.Entity("Core.Models.Shop.ProductTag", b =>
                 {
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -332,7 +332,7 @@ namespace Core.Migrations
                     b.ToTable("ProductTag");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.Ranking", b =>
+            modelBuilder.Entity("Core.Models.Shop.Ranking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -371,7 +371,7 @@ namespace Core.Migrations
                     b.ToTable("Ranking");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.RankingItem", b =>
+            modelBuilder.Entity("Core.Models.Shop.RankingItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -411,7 +411,7 @@ namespace Core.Migrations
                     b.ToTable("RankingItem");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.Tag", b =>
+            modelBuilder.Entity("Core.Models.Shop.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -496,7 +496,7 @@ namespace Core.Migrations
                     b.Navigation("ArticleTag");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.Product", b =>
+            modelBuilder.Entity("Core.Models.Shop.Product", b =>
                 {
                     b.HasOne("Core.Models.CMS.Category", "Category")
                         .WithMany()
@@ -507,20 +507,20 @@ namespace Core.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.ProductDetails", b =>
+            modelBuilder.Entity("Core.Models.Shop.ProductDetails", b =>
                 {
-                    b.HasOne("Core.Models.CMS.Product", "Product")
+                    b.HasOne("Core.Models.Shop.Product", "Product")
                         .WithOne("ProductDetails")
-                        .HasForeignKey("Core.Models.CMS.ProductDetails", "ProductId")
+                        .HasForeignKey("Core.Models.Shop.ProductDetails", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.ProductReview", b =>
+            modelBuilder.Entity("Core.Models.Shop.ProductReview", b =>
                 {
-                    b.HasOne("Core.Models.CMS.Product", "Product")
+                    b.HasOne("Core.Models.Shop.Product", "Product")
                         .WithMany("ProductReviews")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -529,15 +529,15 @@ namespace Core.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.ProductTag", b =>
+            modelBuilder.Entity("Core.Models.Shop.ProductTag", b =>
                 {
-                    b.HasOne("Core.Models.CMS.Product", "Product")
+                    b.HasOne("Core.Models.Shop.Product", "Product")
                         .WithMany("ProductTags")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Models.CMS.Tag", "Tag")
+                    b.HasOne("Core.Models.Shop.Tag", "Tag")
                         .WithMany("ProductTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -548,9 +548,9 @@ namespace Core.Migrations
                     b.Navigation("Tag");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.RankingItem", b =>
+            modelBuilder.Entity("Core.Models.Shop.RankingItem", b =>
                 {
-                    b.HasOne("Core.Models.CMS.Ranking", "Ranking")
+                    b.HasOne("Core.Models.Shop.Ranking", "Ranking")
                         .WithMany("RankingItems")
                         .HasForeignKey("RankingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -574,7 +574,7 @@ namespace Core.Migrations
                     b.Navigation("ArticleTagAssignments");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.Product", b =>
+            modelBuilder.Entity("Core.Models.Shop.Product", b =>
                 {
                     b.Navigation("ProductDetails");
 
@@ -583,12 +583,12 @@ namespace Core.Migrations
                     b.Navigation("ProductTags");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.Ranking", b =>
+            modelBuilder.Entity("Core.Models.Shop.Ranking", b =>
                 {
                     b.Navigation("RankingItems");
                 });
 
-            modelBuilder.Entity("Core.Models.CMS.Tag", b =>
+            modelBuilder.Entity("Core.Models.Shop.Tag", b =>
                 {
                     b.Navigation("ProductTags");
                 });

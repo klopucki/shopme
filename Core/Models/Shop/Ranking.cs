@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Models.CMS;
+namespace Core.Models.Shop;
 
 public class Ranking
 {
@@ -35,3 +35,4 @@ public class Ranking
 
     public ICollection<RankingItem>? RankingItems { get; set; }
 }
+

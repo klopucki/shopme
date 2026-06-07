@@ -1,4 +1,4 @@
-using Core.Models.CMS;
+using Core.Models.Shop;
 
 namespace Client.Models;
 

@@ -1,4 +1,5 @@
 using Core.Models.CMS;
+using Core.Models.Shop;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Data

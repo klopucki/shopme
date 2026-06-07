@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Models.CMS;
+namespace Core.Models.Shop;
 
 public class Tag
 {
@@ -13,3 +13,4 @@ public class Tag
     //  many-to-many 
     public ICollection<ProductTag>? ProductTags { get; set; }
 }
+
