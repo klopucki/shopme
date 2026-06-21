@@ -27,7 +27,7 @@ namespace Intranet.Filters
                     Controller = context.Controller?.GetType().Name ?? "Unknown Controller",
                     Timestamp = DateTime.UtcNow,
                     HttpMethod = context.HttpContext.Request.Method,
-                    Parameters = JsonSerializer.Serialize(context.ActionArguments) // Serialize action arguments
+                    Parameters = JsonSerializer.Serialize(SanitizeActionArguments(context.ActionArguments))
                 };
                 context.HttpContext.Items["AuditLogEntry"] = auditLog;
             }
@@ -80,6 +80,54 @@ namespace Intranet.Filters
                     }
                 }
             }
+        }
+
+        private static Dictionary<string, object?> SanitizeActionArguments(IDictionary<string, object?> actionArguments)
+        {
+            return actionArguments.ToDictionary(
+                argument => argument.Key,
+                argument => IsSensitiveName(argument.Key) ? "[REDACTED]" : SanitizeValue(argument.Value));
+        }
+
+        private static object? SanitizeValue(object? value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var valueType = value.GetType();
+            if (valueType.IsPrimitive || value is string or decimal or DateTime or Guid)
+            {
+                return value;
+            }
+
+            return valueType
+                .GetProperties()
+                .Where(property => property.GetIndexParameters().Length == 0)
+                .ToDictionary(
+                    property => property.Name,
+                    property => IsSensitiveName(property.Name)
+                        ? "[REDACTED]"
+                        : SanitizePropertyValue(property.GetValue(value)));
+        }
+
+        private static object? SanitizePropertyValue(object? value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var valueType = value.GetType();
+            return valueType.IsPrimitive || value is string or decimal or DateTime or Guid
+                ? value
+                : "[Complex value]";
+        }
+
+        private static bool IsSensitiveName(string name)
+        {
+            return name.Contains("password", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

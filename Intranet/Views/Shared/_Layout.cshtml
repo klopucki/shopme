@@ -128,15 +128,25 @@
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" id="userMenu" data-bs-toggle="dropdown">
                         <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2 fw-bold p-2 small">
-                            AD
+                            @((User.Identity?.Name ?? "AD").Substring(0, Math.Min(2, (User.Identity?.Name ?? "AD").Length)).ToUpperInvariant())
                         </div>
-                        <span class="d-none d-sm-inline fw-medium">Administrator</span>
+                        <span class="d-none d-sm-inline fw-medium">@(User.Identity?.Name ?? "Administrator")</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-person me-2"></i> Profile</a></li>
+                        <li>
+                            <a class="dropdown-item py-2" asp-controller="Account" asp-action="Profile">
+                                <i class="bi bi-person me-2"></i> Profile
+                            </a>
+                        </li>
                         <li><a class="dropdown-item py-2" href="#"><i class="bi bi-gear me-2"></i> Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i> Sign out</a></li>
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                <button type="submit" class="dropdown-item py-2 text-danger">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Sign out
+                                </button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </header>
